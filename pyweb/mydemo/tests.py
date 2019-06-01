@@ -41,7 +41,7 @@ def batch_insert():
     User.objects.bulk_create(users)
 
 def select_like():
-    users = User.objects.filter(username__contains='admin')
+    users = User.objects.filter(username__contains='admin')[:1]
     print(users)
 
 select_like()
