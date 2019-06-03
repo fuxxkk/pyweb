@@ -18,9 +18,12 @@ urlpatterns = [
     path('test/', views.test1, name='test'),
 
     # path('user/', include(router.urls)),
+
+    #swagger 配置
     path('getJson/', views.ReturnJson.as_view(), name='json'),
     path('addUser/', views.AddUser.as_view(), name='addUser'),
     path('findUsers/', views.FindUsers.as_view(), name='findUsers'),
+    path('user/login/', views.userLogin),
 
     # path('user/docs/', schema_view, name="docs"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  # api-auth对应授权登录url

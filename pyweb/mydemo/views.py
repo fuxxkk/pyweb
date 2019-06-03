@@ -1,6 +1,6 @@
 from datetime import datetime
 import coreapi
-from django.core import serializers
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
@@ -77,7 +77,21 @@ class FindUsers(APIView):
 
     def get(self, request, *args, **kwargs):
         username = request.GET['username']
-        users = serializers.serialize('json', User.objects.filter(username__contains=username))
-        user = User.objects.filter(username__contains=username)
-        print(user, type(user))
-        return JsonResponse(users, safe=False)
+        user_list = User.objects.filter(username__contains=username)
+        print(user_list)
+        users = utils.toJson(user_list)
+        return HttpResponse(users)
+
+
+def userLogin(request):
+    # schema = AutoSchema(manual_fields=[
+    #     coreapi.Field(name="username", required=True, location="query", description="用户名"),
+    #     coreapi.Field(name="password", required=True, location="query", description="密码"),
+    # ])
+    #params = get_parameter_dic(request)
+    username = request.POST['username']
+    password = request.POST['password']
+    count = User.objects.filter(username=username, password=password).count()
+    if count > 0:
+        context = {'username': username, 'password': password}
+        return render(request, 'pages/login.html', context)

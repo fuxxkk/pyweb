@@ -2,6 +2,8 @@ import hashlib
 import time
 from django.http import QueryDict
 from rest_framework.request import Request
+from django.core import serializers
+
 
 
 def md5_encode(password):
@@ -29,3 +31,6 @@ def get_parameter_dic(request, *args, **kwargs):
         return query_params
     else:
         return result_data
+
+def toJson(data):
+    return serializers.serialize('json', data)
