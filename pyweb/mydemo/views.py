@@ -2,7 +2,7 @@ from datetime import datetime
 import coreapi
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from mydemo.models import User
@@ -88,10 +88,13 @@ def userLogin(request):
     #     coreapi.Field(name="username", required=True, location="query", description="用户名"),
     #     coreapi.Field(name="password", required=True, location="query", description="密码"),
     # ])
-    #params = get_parameter_dic(request)
+    # params = get_parameter_dic(request)
     username = request.POST['username']
     password = request.POST['password']
-    count = User.objects.filter(username=username, password=password).count()
+    count = User.objects.filter(username=username, password=utils.md5_encode(password)).count()
+    referer = request.META['HTTP_REFERER']
     if count > 0:
-        context = {'username': username, 'password': password}
+        return redirect(referer)
+    else:
+        context = {'username': username, 'password': password, 'fail': 'fail'}
         return render(request, 'pages/login.html', context)
