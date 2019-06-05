@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'mydemo.my_middleware.LoginMiddleWare',
 ]
 
 ROOT_URLCONF = 'pyweb.urls'
@@ -199,3 +201,15 @@ LOGGING = {
         },
     },
 }
+
+# session 存到 redis配置
+SESSION_ENGINE = 'redis_sessions.session'
+SESSION_REDIS_HOST = 'localhost'
+SESSION_REDIS_PORT = 6379
+SESSION_REDIS_PREFIX = 'django_session'
+
+#不用过滤的接口
+UNFILTER=[
+    '/user/login/',
+    '/docs/',
+]

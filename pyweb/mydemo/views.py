@@ -94,6 +94,9 @@ def userLogin(request):
     count = User.objects.filter(username=username, password=utils.md5_encode(password)).count()
     referer = request.META['HTTP_REFERER']
     if count > 0:
+        print('login success')
+        request.session['user'] = username
+        request.session.set_expiry(30)
         return redirect(referer)
     else:
         context = {'username': username, 'password': password, 'fail': 'fail'}
